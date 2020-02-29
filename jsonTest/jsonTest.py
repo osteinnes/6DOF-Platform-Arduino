@@ -2,7 +2,7 @@ import serial
 import time
 import json
 
-ser = serial.Serial('COM6', baudrate=19200, timeout=0.1)
+ser = serial.Serial('/dev/ttyUSB0', baudrate=19200, timeout=0.1)
 time.sleep(3)  # delay required before sending and receiving
 position = 0
 
@@ -17,13 +17,13 @@ values = {
 }
 
 
-def setValues(position):
-    values["pos1"] = position
-    values["pos2"] = 180 - position
-    values["pos3"] = position
-    values["pos4"] = 180 - position
-    values["pos5"] = position
-    values["pos6"] = 180 - position
+def setValues(pos1,pos2,pos3):
+    values["pos1"] = pos3
+    values["pos2"] = 180 - pos1
+    values["pos3"] = pos1
+    values["pos4"] = 180 - pos2
+    values["pos5"] = pos2
+    values["pos6"] = 180 - pos3
 
 
     ser.write(str.encode(json.dumps(values)))  # convert to json format, convert to bytes, write to serial port
@@ -34,6 +34,9 @@ def setValues(position):
 
 
 while 1:
-    val = input("Enter your value: ")
-    receivedValues = setValues(int(val))
+    print("================================================")
+    print("Current positions: pos1=", values["pos1"]," pos2=", values["pos2"]," pos3=", values["pos3"]," pos4=", values["pos4"]," pos5=", values["pos5"]," pos6=", values["pos6"])
+    print("Input format: pos1 pos2 pos3")
+    pos1, pos2, pos3 = input("Enter your values: ").split()
+    receivedValues = setValues(int(pos1),int(pos2),int(pos3))
     print(receivedValues)
