@@ -53,6 +53,7 @@ void loop() {
     positions[5] = docReceived["pos6"];
     int counter = docReceived["counter"];
 
+    // Safety loop
     for(int i=0;i<6;i++){
       if(i==0 || i==2 || i==4){
         if((positions[i]<posLimit_lower)){
