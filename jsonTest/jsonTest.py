@@ -2,7 +2,7 @@ import serial
 import time
 import json
 
-ser = serial.Serial('/dev/ttyUSB0', baudrate=19200, timeout=0.1)
+ser = serial.Serial('/dev/ttyUSB3', baudrate=19200, timeout=0.1)
 time.sleep(3)  # delay required before sending and receiving
 position = 0
 
