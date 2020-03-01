@@ -2,14 +2,14 @@
 #include <Servo.h>
 
 String json;
-int positions[6];
 StaticJsonDocument<100> docReceived; // Json document to receive data
 StaticJsonDocument<100> docTransmit; // Json document to transmit data
 Servo srv1,srv2,srv3,srv4,srv5,srv6;  // create servo objects to control a servo
-int posLimit_lower = 70;
-int posLimit_upper = 170;
-int posLimit_inv_lower = 10;
-int posLimit_inv_upper = 110;
+int positions[6];                             // Array holding servo positions
+int posLimit_lower = 70;                      // Lower position limit
+int posLimit_upper = 170;                     // Upper position limit
+int posLimit_inv_lower = 180-posLimit_upper;  // Lower position limit (inverted)
+int posLimit_inv_upper = 180-posLimit_lower;  // Upper position limit (inverted)
 
 void setup() {
   Serial.begin(19200);
@@ -44,24 +44,31 @@ void loop() {
     }
 
     
-
+    // Fetch positions from JSON.
     positions[0] = docReceived["pos1"];
     positions[1] = docReceived["pos2"];
     positions[2] = docReceived["pos3"];
     positions[3] = docReceived["pos4"];
     positions[4] = docReceived["pos5"];
     positions[5] = docReceived["pos6"];
+
+    // Counter
     int counter = docReceived["counter"];
 
-    // Safety loop
+    
+    // Safety loop preventing servos moving out of accepted position scope.
+    // Iterates through each of the six positions
     for(int i=0;i<6;i++){
+      // If servo is not inverted
       if(i==0 || i==2 || i==4){
+        // Check if provided position is outside of scope.
         if((positions[i]<posLimit_lower)){
           positions[i] = posLimit_lower;
         } else if ((positions[i]>posLimit_upper)){
           positions[i] = posLimit_upper;
         }
       } else {
+        // Check if provided position is outside of scope.
         if((positions[i]<posLimit_inv_lower)){
           positions[i] = posLimit_inv_lower;
         } else if ((positions[i]>posLimit_inv_upper)){
@@ -70,6 +77,7 @@ void loop() {
       }
     }
     
+    // Write positions to servo.
     srv1.write(positions[0]);
     srv2.write(positions[1]);
     srv3.write(positions[2]);

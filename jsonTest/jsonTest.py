@@ -32,6 +32,21 @@ def setValues(pos1,pos2,pos3):
     values["counter"] += 1  # increment counter for testing
     return y
 
+def setSixPositions(p1,p2,p3,p4,p5,p6):
+    values["pos1"] = p6
+    values["pos2"] = 180 - p1
+    values["pos3"] = p2
+    values["pos4"] = 180 - p3
+    values["pos5"] = p4
+    values["pos6"] = 180 - p5
+
+
+    ser.write(str.encode(json.dumps(values)))  # convert to json format, convert to bytes, write to serial port
+    data = ser.readline()  # read input, convert to ascii string
+    y = json.loads(data)  # convert string to python object
+    values["counter"] += 1  # increment counter for testing
+    return y
+
 
 while 1:
     print("================================================")
