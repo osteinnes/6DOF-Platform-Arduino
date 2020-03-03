@@ -2,7 +2,7 @@ import serial
 import time
 import json
 
-ser = serial.Serial('/dev/ttyUSB2', baudrate=19200, timeout=0.1)
+ser = serial.Serial('/dev/ttyUSB1', baudrate=19200, timeout=0.1)
 time.sleep(3)  # delay required before sending and receiving
 position = 0
 
@@ -111,7 +111,7 @@ def runTranslationExampleTwo(times):
         y = setValues(high,high,high)
 
 
-#runTranslationExampleTwo(3)
+#runTranslationExample()
 while 1:
     print("================================================")
     print("Current positions: pos1=", values["pos1"]," pos2=", values["pos2"]," pos3=", values["pos3"]," pos4=", values["pos4"]," pos5=", values["pos5"]," pos6=", values["pos6"])
